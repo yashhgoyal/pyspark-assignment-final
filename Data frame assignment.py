@@ -139,3 +139,20 @@ df7 = df7.select(
     .when(col("email").contains("yahoo"), "Yahoo")
     .otherwise("Other").alias("email_provider"))
 df7.show()
+
+# Question 2 - email_provider
+print("\n2. Conditional String Manipulation - email_provider:")
+customers = [(1, "john@gmail.com"), (2, "jane@yahoo.com"), (3, "doe@hotmail.com")]
+schema7 = StructType([
+    StructField("customer_id", IntegerType(), True),
+    StructField("email", StringType(), True)
+])
+df7 = spark.createDataFrame(customers, schema7)
+df7 = df7.select(
+    col("customer_id"),
+    col("email"),
+    when(col("email").contains("gmail"), "Gmail")
+    .when(col("email").contains("yahoo"), "Yahoo")
+    .otherwise("Other").alias("email_provider")
+)
+df7.show()
