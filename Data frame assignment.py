@@ -156,3 +156,20 @@ df7 = df7.select(
     .otherwise("Other").alias("email_provider")
 )
 df7.show()
+
+# Question 3 - season
+print("\n3. Conditional Date Manipulation - season:")
+orders = [(1, "2024-07-01"), (2, "2024-12-01"), (3, "2024-05-01")]
+schema8 = StructType([
+    StructField("order_id", IntegerType(), True),
+    StructField("order_date", StringType(), True)
+])
+df8 = spark.createDataFrame(orders, schema8)
+df8 = df8.withColumn("month", month(col("order_date")))
+df8 = df8.select(
+    col("order_id"),
+    col("order_date"),
+    when(col("month").isin([6, 7, 8]), "Summer")
+    .when(col("month").isin([12, 1, 2]), "Winter")
+    .otherwise("Other").alias("season"))
+df8.show()
