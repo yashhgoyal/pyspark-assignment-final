@@ -173,3 +173,22 @@ df8 = df8.select(
     .when(col("month").isin([12, 1, 2]), "Winter")
     .otherwise("Other").alias("season"))
 df8.show()
+
+
+# Question 4 - discount
+print("\n4. Multiple Nested Conditions - discount:")
+sales = [(1, 100), (2, 1500), (3, 300)]
+schema9 = StructType([
+    StructField("sale_id", IntegerType(), True),
+    StructField("amount", IntegerType(), True)
+])
+df9 = spark.createDataFrame(sales, schema9)
+df9 = df9.select(
+    col("sale_id"),
+    col("amount"),
+    when(col("amount") < 200, 0)
+    .when((col("amount") >= 200) & (col("amount") <= 1000), 10)
+    .otherwise(20).alias("discount")
+)
+df9.show()
+
